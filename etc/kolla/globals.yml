@@ -110,7 +110,7 @@ enable_ceilometer: "no"
 enable_central_logging: "no"
 enable_ceph: "no"
 enable_ceph_rgw: "no"
-enable_cinder: "yes"
+enable_cinder: "no"
 enable_heat: "yes"
 enable_horizon: "yes"
 enable_ironic: "no"
@@ -124,10 +124,8 @@ enable_multipathd: "no"
 enable_neutron_lbaas: "no"
 enable_neutron_qos: "no"
 enable_swift: "no"
+enable_tempest: "no"
 
-# Control usage of ceph per service. This allows to configure external ceph
-# when ceph is not deployed by Kolla.
-#glance_enable_ceph: "{{ enable_ceph }}"
 
 ###################
 # Ceph options
@@ -142,10 +140,21 @@ enable_swift: "no"
 # Valid options are [ erasure, replicated ]
 #ceph_pool_type: "replicated"
 
+#######################
+# Glance options
+#######################
+# Configure image backend.
+glance_backend_file: "yes"
+#glance_backend_ceph: "no"
+
 
 #######################
-# Cinder iSCSI options
+# Cinder options
 #######################
+# Enable / disable Cinder backends
+cinder_backend_iscsi: "{{ enable_iscsi }}"
+cinder_backend_ceph: "{{ enable_ceph }}"
+
 # Cinder's iSCSI backend !!!REQUIRES!!! two parameters:
 # 1 - IP address of the server hosting LVM Volume group
 # 2 - The name of Volume group which Cinder will use.
@@ -175,3 +184,16 @@ cinder_volume_group: cinder-volumes
 # selected then swift_devices_name should specify a pattern which would match to
 # filesystems' labels prepared for swift.
 #swift_devices_name: "KOLLA_SWIFT_DATA"
+
+
+################################################
+# Tempest - The OpenStack Integration Test Suite
+################################################
+# following value must be set when enable tempest
+tempest_image_id:
+tempest_flavor_ref_id:
+tempest_public_network_id:
+tempest_floating_network_name:
+
+# tempest_image_alt_id: "{{ tempest_image_id }}"
+# tempest_flavor_ref_alt_id: "{{ tempest_flavor_ref_id }}"

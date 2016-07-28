@@ -154,6 +154,8 @@ elasticsearch_port: "9200"
 
 manila_api_port: "8786"
 
+watcher_api_port: "9322"
+
 public_protocol: "{{ 'https' if kolla_enable_tls_external | bool else 'http' }}"
 internal_protocol: "http"
 admin_protocol: "http"
@@ -165,6 +167,8 @@ openstack_release: "3.0.0"
 openstack_logging_debug: "False"
 
 openstack_region_name: "RegionOne"
+
+openstack_service_workers: "{{ [ansible_processor_vcpus, 5]|min }}"
 
 # Optionally allow Kolla to set sysctl values
 set_sysctl: "yes"
@@ -210,6 +214,8 @@ enable_murano: "no"
 enable_neutron_lbaas: "no"
 enable_neutron_qos: "no"
 enable_swift: "no"
+enable_tempest: "no"
+enable_watcher: "no"
 
 ironic_keystone_user: "ironic"
 neutron_keystone_user: "neutron"
@@ -219,8 +225,6 @@ nova_keystone_user: "nova"
 enable_nova_fake: "no"
 num_nova_fake_per_node: 5
 
-# Control usage of ceph per service
-glance_enable_ceph: "{{ enable_ceph }}"
 
 ####################
 # RabbitMQ options
@@ -243,14 +247,23 @@ kolla_external_fqdn_cert: "{{ node_config_directory }}/certificates/haproxy.pem"
 kibana_user: "kibana"
 
 
+#######################
+# Glance options
+#######################
+glance_backend_file: "{{ not enable_ceph | bool }}"
+glance_backend_ceph: "{{ enable_ceph }}"
+
+
 #################################
-# Cinder - Block Storage options
+# Cinder options
 #################################
-cinder_volume_driver: "{{ 'ceph' if enable_ceph | bool else 'lvm' }}"
-cinder_volume_group: "{{ 'cinder-volumes' if enable_iscsi | bool else '' }}"
-cinder_volume_backend_name: "{{ 'cinder-volumes' if enable_iscsi | bool else '' }}"
-cinder_iscsi_helper: "{{ 'tgtadm' if enable_iscsi | bool else '' }}"
-cinder_iscsi_protocol: "{{ 'iscsi' if enable_iscsi | bool else '' }}"
+cinder_backend_iscsi: "{{ enable_iscsi }}"
+cinder_backend_ceph: "{{ enable_ceph }}"
+cinder_volume_driver: "{{ 'lvm' if cinder_backend_iscsi }}"
+cinder_volume_group: "{{ 'cinder-volumes' if cinder_backend_iscsi | bool else '' }}"
+cinder_volume_backend_name: "{{ 'cinder-volumes' if cinder_backend_iscsi | bool else '' }}"
+cinder_iscsi_helper: "{{ 'tgtadm' if cinder_backend_iscsi | bool else '' }}"
+cinder_iscsi_protocol: "{{ 'iscsi' if cinder_backend_iscsi | bool else '' }}"
 
 ###################
 # Ceph options

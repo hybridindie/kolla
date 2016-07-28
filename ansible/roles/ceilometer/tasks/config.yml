@@ -27,11 +27,13 @@
       service_name: "{{ item }}"
     sources:
       - "{{ role_path }}/templates/ceilometer.conf.j2"
-      - "/etc/kolla/config/global.conf"
-      - "/etc/kolla/config/database.conf"
-      - "/etc/kolla/config/messaging.conf"
-      - "/etc/kolla/config/glance.conf"
-      - "/etc/kolla/config/glance/{{ item }}.conf"
+      - "{{ node_custom_config }}/global.conf"
+      - "{{ node_custom_config }}/database.conf"
+      - "{{ node_custom_config }}/messaging.conf"
+      - "{{ node_custom_config }}/glance.conf"
+      - "{{ node_custom_config }}/glance/{{ item }}.conf"
+      - "{{ node_custom_config }}/ceilometer/{{ item }}.conf"
+      - "{{ node_custom_config }}/ceilometer/{{ inventory_hostname }}/ceilometer.conf"
     dest: "{{ node_config_directory }}/{{ item }}/ceilometer.conf"
   with_items:
     - "ceilometer-notification"
@@ -39,3 +41,12 @@
     - "ceilometer-api"
     - "ceilometer-central"
     - "ceilometer-compute"
+
+- name: Copying over event and pipeline yaml for notification service
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ node_config_directory }}/ceilometer-notification/{{ item }}"
+  with_items:
+    - "event_definitions.yaml"
+    - "event_pipeline.yaml"
+    - "pipeline.yaml"
