@@ -182,6 +182,10 @@ SOURCES = {
         'type': 'url',
         'location': ('http://tarballs.openstack.org/designate/'
                      'designate-master.tar.gz')},
+    'designate-dashboard': {
+        'type': 'url',
+        'location': ('http://tarballs.openstack.org/designate-dashboard/'
+                     'designate-dashboard-master.tar.gz')},
     'glance-base': {
         'type': 'url',
         'location': ('http://tarballs.openstack.org/glance/'
@@ -214,6 +218,10 @@ SOURCES = {
         'type': 'url',
         'location': ('http://tarballs.openstack.org/magnum/'
                      'magnum-master.tar.gz')},
+    'magnum-ui': {
+        'type': 'url',
+        'location': ('http://tarballs.openstack.org/magnum-ui/'
+                     'magnum-ui-master.tar.gz')},
     'manila-base': {
         'type': 'url',
         'location': ('http://tarballs.openstack.org/manila/'
@@ -222,10 +230,18 @@ SOURCES = {
         'type': 'url',
         'location': ('http://tarballs.openstack.org/mistral/'
                      'mistral-master.tar.gz')},
+    'mistral-dashboard': {
+        'type': 'url',
+        'location': ('http://tarballs.openstack.org/mistral-dashboard/'
+                     'mistral-dashboard-master.tar.gz')},
     'murano-base': {
         'type': 'url',
         'location': ('http://tarballs.openstack.org/murano/'
                      'murano-master.tar.gz')},
+    'murano-dashboard': {
+        'type': 'url',
+        'location': ('http://tarballs.openstack.org/murano/'
+                     'murano-dashboard-master.tar.gz')},
     'neutron-base': {
         'type': 'url',
         'location': ('http://tarballs.openstack.org/neutron/'
@@ -234,6 +250,10 @@ SOURCES = {
         'type': 'url',
         'location': ('http://tarballs.openstack.org/neutron-lbaas/'
                      'neutron-lbaas-master.tar.gz')},
+    'neutron-lbaas-dashboard': {
+        'type': 'url',
+        'location': ('http://tarballs.openstack.org/neutron-lbaas-dashboard/'
+                     'neutron-lbaas-dashboard-master.tar.gz')},
     'nova-base': {
         'type': 'url',
         'location': ('http://tarballs.openstack.org/nova/'
