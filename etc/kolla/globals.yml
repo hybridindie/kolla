@@ -111,10 +111,10 @@ enable_central_logging: "no"
 enable_ceph: "no"
 enable_ceph_rgw: "no"
 enable_cinder: "no"
+enable_cinder_backend_lvm: "no"
 enable_heat: "yes"
 enable_horizon: "yes"
 enable_ironic: "no"
-enable_iscsi: "no"
 enable_magnum: "no"
 enable_manila: "no"
 enable_mistral: "no"
@@ -125,6 +125,7 @@ enable_neutron_lbaas: "no"
 enable_neutron_qos: "no"
 enable_swift: "no"
 enable_tempest: "no"
+enable_watcher: "no"
 
 
 ###################
@@ -152,13 +153,18 @@ glance_backend_file: "yes"
 # Cinder options
 #######################
 # Enable / disable Cinder backends
-cinder_backend_iscsi: "{{ enable_iscsi }}"
-cinder_backend_ceph: "{{ enable_ceph }}"
+#cinder_backend_ceph: "{{ enable_ceph }}"
 
 # Cinder's iSCSI backend !!!REQUIRES!!! two parameters:
 # 1 - IP address of the server hosting LVM Volume group
 # 2 - The name of Volume group which Cinder will use.
 cinder_volume_group: cinder-volumes
+
+
+#######################
+# Nova options
+#######################
+nova_backend_ceph: "{{ enable_ceph }}"
 
 
 #######################################

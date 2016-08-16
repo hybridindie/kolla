@@ -47,8 +47,8 @@ On Ubuntu 14.04 it is as easy as::
 
     sudo apt-get install vagrant ruby-dev ruby-libvirt python-libvirt libvirt-dev nfs-kernel-server
 
-**Note:** Many distros ship outdated versions of Vagrant by default. When in
-doubt, always install the latest from the downloads page above.
+.. note:: Many distros ship outdated versions of Vagrant by default. When in
+          doubt, always install the latest from the downloads page above.
 
 Next install the hostmanager plugin so all hosts are recorded in ``/etc/hosts``
 (inside each vm)::
@@ -83,7 +83,7 @@ correctly. On Fedora 22::
 
 Find a location in the system's home directory and checkout the Kolla repo::
 
-    git clone https://github.com/openstack/kolla.git
+    git clone https://git.openstack.org/openstack/kolla
 
 Developers can now tweak the Vagrantfile or bring up the default **all-in-one**
 CentOS 7-based environment::

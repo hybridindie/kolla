@@ -164,8 +164,8 @@ _BASE_OPTS = [
 SOURCES = {
     'openstack-base': {
         'type': 'url',
-        'location': ('https://github.com/openstack/requirements/tarball/'
-                     'master')},
+        'location': ('http://tarballs.openstack.org/requirements/'
+                     'requirements-master.tar.gz')},
     'aodh-base': {
         'type': 'url',
         'location': ('http://tarballs.openstack.org/aodh/'
@@ -254,6 +254,10 @@ SOURCES = {
         'type': 'url',
         'location': ('http://tarballs.openstack.org/neutron-lbaas-dashboard/'
                      'neutron-lbaas-dashboard-master.tar.gz')},
+    'neutron-networking-sfc-agent': {
+        'type': 'url',
+        'location': ('http://tarballs.openstack.org/networking-sfc/'
+                     'networking-sfc-master.tar.gz')},
     'nova-base': {
         'type': 'url',
         'location': ('http://tarballs.openstack.org/nova/'

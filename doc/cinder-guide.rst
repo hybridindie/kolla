@@ -25,7 +25,7 @@ a real physical volume or a loopback mounted file for development.
   present is via a Ceph deployment.  If community members disagree
   with this decision, please report the specific use case in the
   Cinder bug tracker here:
-    `_bug 1571211  <https://launchpad.net/bugs/1571211>`__.
+  `_bug 1571211  <https://launchpad.net/bugs/1571211>`__.
 
 
 Create a Volume Group
@@ -95,17 +95,11 @@ tgtd container serves as a bridge between cinder-volume process and a server
 hosting Logical Volume Groups (LVG). ``iscsid`` container serves as a bridge
 between nova-compute process and the server hosting LVG.
 
-In order to use iSCSI as a Cinder's backend, these two parameters must be
-specified in ``globals.yml``. ::
+In order to use Cinder's LVM backend, a LVG named ``cinder-volumes`` should
+exist on the server and following parameter must be specified in
+``globals.yml``. ::
 
-    enable_iscsi: "yes"
-
-    cinder_volume_group: << lvg_name >>
-
-
-Where:
-
-- ``lvg_name`` - is a name of LVG on that server.
+    enable_cinder_backend_lvm: "yes"
 
 NOTE: For Ubuntu and LVM2/iSCSI
 
@@ -118,6 +112,11 @@ targeted for nova compute role.
 
   - Add configfs module to ``/etc/modules``
   - Rebuild initramfs using: ``update-initramfs -u`` command
+  - Stop ``open-iscsi`` system service due to its conflicts with iscsid container.
+    For Ubuntu 14.04 (upstart): ``service open-iscsi stop``,
+    Ubuntu 16.04 (systemd): ``systemctl stop open-iscsi; systemctl stop iscsid``
+
   - Make sure configfs gets mounted during a server boot up process. There are
-    multiple ways to accomplish it, one example is adding this command
-    "mount -t configfs configfs ``/sys/kernel/config``" to ``/etc/rc.local``
+    multiple ways to accomplish it, one example:  ::
+
+    mount -t configfs /etc/rc.local /sys/kernel/config

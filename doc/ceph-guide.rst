@@ -15,8 +15,8 @@ Requirements
 * A minimum of 3 hosts for a vanilla deploy
 * A minimum of 1 block device per host
 
-Preparation and Deployment
-==========================
+Preparation
+===========
 
 To prepare a disk for use as a
 `Ceph OSD <http://docs.ceph.com/docs/master/man/8/ceph-osd/>`_ you must add a
@@ -47,6 +47,49 @@ usage with Kolla.
          1      1049kB  10.7GB  10.7GB               KOLLA_CEPH_OSD_BOOTSTRAP
 
 
+Using an external journal drive
+-------------------------------
+
+The steps documented above created a journal partition of 5 GByte
+and a data partition with the remaining storage capacity on the same tagged
+drive.
+
+It is a common practice to place the journal of an OSD on a separate
+journal drive. This section documents how to use an external journal drive.
+
+Prepare the storage drive in the same way as documented above:
+
+::
+
+    # <WARNING ALL DATA ON $DISK will be LOST!>
+    # where $DISK is /dev/sdb or something similar
+    parted $DISK -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP_FOO 1 -1
+
+To prepare the journal external drive execute the following command:
+
+::
+
+    # <WARNING ALL DATA ON $DISK will be LOST!>
+    # where $DISK is /dev/sdc or something similar
+    parted $DISK -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP_FOO_J 1 -1
+
+.. note::
+
+   Use different suffixes (``_42``, ``_FOO``, ``_FOO42``, ..) to use different external
+   journal drives for different storage drives. One external journal drive can only
+   be used for one storage drive.
+
+.. note::
+
+   The partition labels ``KOLLA_CEPH_OSD_BOOTSTRAP`` and ``KOLLA_CEPH_OSD_BOOTSTRAP_J``
+   are not working when using external journal drives. It is required to use
+   suffixes (``_42``, ``_FOO``, ``_FOO42``, ..). If you want to setup only one
+   storage drive with one external journal drive it is also necessary to use a suffix.
+
+
+Configuration
+=============
+
 Edit the [storage] group in the inventory which contains the hostname of the
 hosts that have the block devices you have prepped as shown above.
 
@@ -74,13 +117,16 @@ RGW requires a healthy cluster in order to be successfully deployed. On initial
 start up, RGW will create several pools. The first pool should be in an
 operational state to proceed with the second one, and so on. So, in the case of
 an **all-in-one** deployment, it is necessary to change the default number of
-copies for the pools before deployment. Modify the file ``/etc/kolla/config/ceph.conf``
-and add the contents::
+copies for the pools before deployment. Modify the file
+``/etc/kolla/config/ceph.conf`` and add the contents::
 
     [global]
     osd pool default size = 1
     osd pool default min size = 1
 
+
+Deployment
+==========
 
 Finally deploy the Ceph-enabled OpenStack:
 
@@ -129,8 +175,8 @@ must make the choice to use an erasure coded pool or a replicated pool
 (the default) when you initially deploy. You cannot change this without
 completely removing the pool and recreating it.
 
-To enable erasure coded pools add the following options to your ``/etc/kolla/globals.yml``
-configuration file:
+To enable erasure coded pools add the following options to your
+``/etc/kolla/globals.yml`` configuration file:
 
 ::
 
@@ -189,8 +235,8 @@ The default pool Ceph creates is named **rbd**. It is safe to remove this pool:
 Troubleshooting
 ===============
 
-Deploy fails during 'Fetching Ceph keyrings ... No JSON object could be decoded'
---------------------------------------------------------------------------------
+Deploy fails with 'Fetching Ceph keyrings ... No JSON object could be decoded'
+------------------------------------------------------------------------------
 
 If an initial deploy of Ceph fails, perhaps due to improper configuration or
 similar, the cluster will be partially formed and will need to be reset for a

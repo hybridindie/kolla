@@ -6,9 +6,9 @@ Operating Kolla
 
 Upgrading
 =========
-Kolla's strategy for upgrades is to never make a mess and follow consistent
-patterns during deployment such that upgrades from one environment to
-the next are simple to automate.
+Kolla's strategy for upgrades is to never make a mess and to follow consistent
+patterns during deployment such that upgrades from one environment to the next
+are simple to automate.
 
 Kolla implements a one command operation for upgrading an existing deployment
 consisting of a set of containers and configuration data to a new deployment.
@@ -16,15 +16,15 @@ consisting of a set of containers and configuration data to a new deployment.
 Kolla uses the ``x.y.z`` semver nomenclature for naming versions. Kolla's
 Liberty version is ``1.0.0`` and the Mitaka version is ``2.0.0``. The Kolla
 community commits to release z-stream updates every 45 days that resolve
-defects in the stable version in use and publish those images to the
-Docker Hub registry. To prevent confusion, the Kolla community recommends
-using an alpha identifier ``x.y.z.a`` where ``a`` represents any customization
-done on the part of the operator. For example, if an operator intends
-to modify one of the Docker files or the repos from where the originals and
-build custom images and using Liberty, the operator should start with
-version 1.0.0.0 and increase alpha for each release. Alpha tag usage is
-at discretion of the operator. The alpha identifier could be a number as
-recommended or a string of the operator's choosing.
+defects in the stable version in use and publish those images to the Docker Hub
+registry. To prevent confusion, the Kolla community recommends using an alpha
+identifier ``x.y.z.a`` where ``a`` represents any customization done on the
+part of the operator. For example, if an operator intends to modify one of the
+Docker files or the repos from the originals and build custom images for the
+Liberty version, the operator should start with version 1.0.0.0 and increase
+alpha for each release. Alpha tag usage is at discretion of the operator. The
+alpha identifier could be a number as recommended or a string of the operator's
+choosing.
 
 If the alpha identifier is not used, Kolla will deploy or upgrade using the
 version number information contained in the release. To customize the
@@ -49,16 +49,16 @@ Then run the command to upgrade::
 
     kolla-ansible upgrade
 
-.. NOTE:: Varying degrees of success have been reported with upgrading
+.. note:: Varying degrees of success have been reported with upgrading
   the libvirt container with a running virtual machine in it. The libvirt
   upgrade still needs a bit more validation, but the Kolla community feels
   confident this mechanism can be used with the correct Docker graph driver.
 
-.. NOTE:: The Kolla community recommends the btrfs or aufs graph drivers for
+.. note:: The Kolla community recommends the btrfs or aufs graph drivers for
   storing data as sometimes the LVM graph driver loses track of its reference
   counting and results in an unremovable container.
 
-.. NOTE:: Because of system technical limitations, upgrade of a libvirt
+.. note:: Because of system technical limitations, upgrade of a libvirt
   container when using software emulation (``virt_driver=qemu`` in nova.conf),
   does not work at all. This is acceptable because KVM is the recommended
   virtualization driver to use with Nova.
