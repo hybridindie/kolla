@@ -34,9 +34,9 @@ Kolla Overview
 ==============
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
-   deployment-philosophy
+   deployment-philosophy/deployment-philosophy
    quickstart
    multinode
    image-building
@@ -65,6 +65,5 @@ Developer Docs
    :maxdepth: 1
 
    CONTRIBUTING
-   heat-dev-env
    vagrant-dev-env
    running-tests

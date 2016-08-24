@@ -13,7 +13,7 @@ MAINTAINER {{ maintainer }}
             'python-ldappool'
         ] %}
 
-RUN {{ macros.install_packages(keystone_packages | customizable("packages")) }}
+{{ macros.install_packages(keystone_packages | customizable("packages")) }}
 RUN mkdir -p /var/www/cgi-bin/keystone \
     && cp -a /usr/share/keystone/keystone.wsgi /var/www/cgi-bin/keystone/main \
     && cp -a /usr/share/keystone/keystone.wsgi /var/www/cgi-bin/keystone/admin \
@@ -28,11 +28,12 @@ RUN mkdir -p /var/www/cgi-bin/keystone \
             'python-ldappool'
         ] %}
 
-RUN {{ macros.install_packages(keystone_packages | customizable("packages")) }}
+{{ macros.install_packages(keystone_packages | customizable("packages")) }}
 RUN mkdir -p /var/www/cgi-bin/keystone \
     && cp -a /usr/share/keystone/wsgi.py /var/www/cgi-bin/keystone/main \
     && cp -a /usr/share/keystone/wsgi.py /var/www/cgi-bin/keystone/admin \
-    && echo > /etc/apache2/ports.conf
+    && echo > /etc/apache2/ports.conf \
+    && rm /etc/apache2/sites-enabled/keystone.conf
 
     {% endif %}
 {% elif install_type == 'source' %}
@@ -43,7 +44,7 @@ RUN mkdir -p /var/www/cgi-bin/keystone \
             'mod_wsgi',
             'python-ldappool'
         ] %}
-RUN {{ macros.install_packages(keystone_packages | customizable("packages")) }}
+{{ macros.install_packages(keystone_packages | customizable("packages")) }}
 RUN sed -i -r 's,^(Listen 80),#\1,' /etc/httpd/conf/httpd.conf
 
     {% elif base_distro in ['ubuntu', 'debian'] %}
@@ -53,7 +54,7 @@ RUN sed -i -r 's,^(Listen 80),#\1,' /etc/httpd/conf/httpd.conf
             'libapache2-mod-wsgi',
             'python-ldappool'
         ] %}
-RUN {{ macros.install_packages(keystone_packages | customizable("packages")) }}
+{{ macros.install_packages(keystone_packages | customizable("packages")) }}
 RUN echo > /etc/apache2/ports.conf
 
     {% endif %}

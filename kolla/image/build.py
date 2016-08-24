@@ -51,6 +51,7 @@ if PROJECT_ROOT not in sys.path:
 from kolla.common import config as common_config
 from kolla.common import task
 from kolla.template import filters as jinja_filters
+from kolla.template import methods as jinja_methods
 from kolla import version
 
 
@@ -71,7 +72,6 @@ def make_a_logger(conf=None, image_name=None):
         log.setLevel(logging.DEBUG)
     else:
         log.setLevel(logging.INFO)
-    log.propagate = False
     return log
 
 
@@ -625,6 +625,17 @@ class KollaWorker(object):
         }
         return filters
 
+    def _get_methods(self):
+        """Mapping of available Jinja methods
+
+        return a dictionary that maps available function names and their
+        corresponding python methods to make them available in jinja templates
+        """
+
+        return {
+            'debian_package_install': jinja_methods.debian_package_install,
+        }
+
     def create_dockerfiles(self):
         kolla_version = version.version_info.cached_version_string()
         supported_distro_release = common_config.DISTRO_RELEASE.get(
@@ -648,6 +659,7 @@ class KollaWorker(object):
             env = jinja2.Environment(  # nosec: not used to render HTML
                 loader=jinja2.FileSystemLoader(self.working_dir))
             env.filters.update(self._get_filters())
+            env.globals.update(self._get_methods())
             tpl_path = os.path.join(
                 os.path.relpath(path, self.working_dir),
                 template_name)
@@ -778,7 +790,9 @@ class KollaWorker(object):
             installation = dict()
             # NOTE(jeffrey4l): source is not needed when the type is None
             if self.conf._get('type', self.conf._get_group(section)) is None:
-                LOG.debug('No source location found in section %s', section)
+                if image.parent_name is None:
+                    LOG.debug('No source location found in section %s',
+                              section)
             else:
                 installation['type'] = self.conf[section]['type']
                 installation['source'] = self.conf[section]['location']
@@ -846,7 +860,7 @@ class KollaWorker(object):
             return
 
         def list_children(images, ancestry):
-            children = six.next(six.itervalues(ancestry))
+            children = six.next(ancestry.values())
             for image in images:
                 if image.status not in [STATUS_MATCHED]:
                     continue

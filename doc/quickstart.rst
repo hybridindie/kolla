@@ -49,9 +49,28 @@ and OverlayFS. In order to update kernel in Ubuntu 14.04 LTS to 4.2, run:
 
     apt-get install linux-image-generic-lts-wily
 
+.. WARNING::
+   Operators performing an evaluation or deployment should use a stable
+   branch.  Operators performing development (or developers) should use
+   master.
+
 .. note:: Install is *very* sensitive about version of components. Please
   review carefully because default Operating System repos are likely out of
   date.
+
+Dependencies for the stable branch are:
+
+=====================   ===========  ===========  =========================
+Component               Min Version  Max Version  Comment
+=====================   ===========  ===========  =========================
+Ansible                 1.9.4        < 2.0.0      On deployment host
+Docker                  1.10.0       none         On target nodes
+Docker Python           1.6.0        none         On target nodes
+Python Jinja2           2.6.0        none         On deployment host
+=====================   ===========  ===========  =========================
+
+
+Dependencies for the master branch are:
 
 =====================   ===========  ===========  =========================
 Component               Min Version  Max Version  Comment
@@ -116,14 +135,27 @@ the drop-in unit file as follows, reload and restart the docker service:
     MountFlags=shared
     EOF
 
+Restart docker by executing the following commands:
+
+::
+
     # Run these commands to reload the daemon
     systemctl daemon-reload
     systemctl restart docker
 
-For Ubuntu 14.04 which uses upstart instead of systemd, run the following:
+For Ubuntu 14.04 which uses upstart and other non-systemd distros,
+run the following:
 
 ::
 
+    mount --make-shared /run
+
+For mounting ``/run`` as shared upon startup, add that command to
+``/etc/rc.local``
+
+::
+
+    # Edit /etc/rc.local to add:
     mount --make-shared /run
 
 .. note:: If centos/fedora/oraclelinux container images are built on an Ubuntu
@@ -235,9 +267,34 @@ requirements it can be installed by:
 
     apt-get install ansible
 
+.. WARNING::
+   Kolla uses PBR in its implementation. PBR provides version information
+   to Kolla about the package in use. This information is later used when
+   building images to specify the Docker tag used in the image built.  When
+   installing the Kolla package via pip, PBR will always use the PBR version
+   information. When obtaining a copy of the software via git, PBR will use
+   the git version information, but **ONLY** if Kolla has not been pip
+   installed via the pip package manager. This is why there is an operator
+   workflow and a developer workflow.
 
-Install Kolla
--------------
+Installing Kolla for evaluation or deployment
+---------------------------------------------
+
+Install Kolla and its dependencies:
+
+::
+
+    pip install kolla
+
+Kolla holds configurations files in ``/usr/share/kolla/etc_examples/kolla/``.
+Copy the configuration files to ``/etc``:
+
+::
+
+    cp -r /usr/share/kolla/etc_examples/kolla /etc/
+
+Installing Kolla and dependencies for development
+-------------------------------------------------
 
 To clone the Kolla repo:
 
@@ -245,11 +302,14 @@ To clone the Kolla repo:
 
     git clone https://git.openstack.org/openstack/kolla
 
-To install Kolla tools and Python dependencies use:
+To install Kolla's Python dependencies use:
 
 ::
 
-    pip install kolla/
+    pip install -r kolla/requirements.txt -r kolla/test-requirements.txt
+
+.. note:: This does not actually install Kolla. Many commands in this documentation are named
+    differently in the tools directory.
 
 Kolla holds configurations files in ``etc/kolla``. Copy the configuration files
 to ``/etc``:
@@ -305,22 +365,9 @@ Two virtualized development environment options are available for Kolla. These
 options permit the development of Kolla without disrupting the host operating
 system.
 
-If developing Kolla on an OpenStack cloud environment that supports Heat,
-follow the :doc:`heat-dev-env`.
-
 If developing Kolla on a system that provides VirtualBox or Libvirt in addition
 to Vagrant, use the Vagrant virtual environment documented in
 :doc:`vagrant-dev-env`.
-
-Currently the Heat development environment is entirely non-functional. The
-Kolla core reviewers have debated removing it from the repository but have
-resisted to provide an opportunity for contributors to make Heat usable for
-Kolla development. The Kolla core reviewers believe Heat would offer a great
-way to develop Kolla in addition to Vagrant, bare metal, or a manually setup
-virtual machine.
-
-For more information refer to
-`_bug 1562334 <https://bugs.launchpad.net/kolla/+bug/1562334>`__.
 
 Building Container Images
 =========================

@@ -18,7 +18,6 @@ from mock import patch
 from oslo_log import fixture as log_fixture
 from oslo_log import log as logging
 from oslotest import base
-import six
 import testtools
 
 sys.path.append(
@@ -28,7 +27,6 @@ from kolla.image import build
 LOG = logging.getLogger(__name__)
 
 
-@six.add_metaclass(abc.ABCMeta)
 class BuildTest(object):
     excluded_images = abc.abstractproperty()
 
@@ -46,7 +44,7 @@ class BuildTest(object):
             bad_results, good_results, unmatched_results = build.run_build()
 
         failures = 0
-        for image, result in six.iteritems(bad_results):
+        for image, result in bad_results.items():
             if image in self.excluded_images:
                 if result is 'error':
                     continue
@@ -70,8 +68,9 @@ class BuildTestCentosBinary(BuildTest, base.BaseTestCase):
     excluded_images = ["kuryr",
                        "neutron-networking-sfc-agent",
                        "senlin-base",
-                       "watcher-base"
-                       ]
+                       "vmtp",
+                       "watcher-base",
+                       "congress-base"]
 
     def setUp(self):
         super(BuildTestCentosBinary, self).setUp()
@@ -90,9 +89,13 @@ class BuildTestCentosSource(BuildTest, base.BaseTestCase):
 
 
 class BuildTestUbuntuBinary(BuildTest, base.BaseTestCase):
-    excluded_images = ["neutron-networking-sfc-agent",
-                       "zaqar"
-                       ]
+    excluded_images = ["kuryr",
+                       "neutron-networking-sfc-agent",
+                       "senlin-base",
+                       "vmtp",
+                       "zaqar",
+                       "watcher-base",
+                       "congress-base"]
 
     def setUp(self):
         super(BuildTestUbuntuBinary, self).setUp()
@@ -113,8 +116,9 @@ class BuildTestOracleLinuxBinary(BuildTest, base.BaseTestCase):
     excluded_images = ["kuryr",
                        "neutron-networking-sfc-agent",
                        "senlin-base",
-                       "watcher-base"
-                       ]
+                       "vmtp",
+                       "watcher-base",
+                       "congress-base"]
 
     def setUp(self):
         super(BuildTestOracleLinuxBinary, self).setUp()
