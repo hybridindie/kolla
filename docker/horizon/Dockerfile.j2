@@ -95,8 +95,9 @@ RUN echo > /etc/apache2/ports.conf \
 
 ADD horizon-archive /horizon-source
 RUN ln -s horizon-source/horizon/* horizon \
-    && /var/lib/kolla/venv/bin/pip --no-cache-dir install --upgrade -c requirements/upper-constraints.txt /horizon \
-    && useradd --user-group horizon \
+    && /var/lib/kolla/venv/bin/pip --no-cache-dir install --upgrade -c requirements/upper-constraints.txt /horizon
+
+RUN useradd --user-group horizon \
     && mkdir -p /etc/openstack-dashboard /home/horizon \
     && ln -s /etc/openstack-dashboard/local_settings /var/lib/kolla/venv/lib/python2.7/site-packages/openstack_dashboard/local/local_settings.py \
     && cp -r /horizon/openstack_dashboard/conf/* /etc/openstack-dashboard/ \
