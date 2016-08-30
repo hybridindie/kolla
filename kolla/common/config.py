@@ -34,9 +34,10 @@ INSTALL_TYPE_CHOICES = ['binary', 'source', 'rdo', 'rhos']
 
 _PROFILE_OPTS = [
     cfg.ListOpt('infra',
-                default=['ceph', 'cron', 'mariadb', 'haproxy',
-                         'keepalived', 'kolla-toolbox', 'memcached',
-                         'mongodb', 'openvswitch', 'rabbitmq', 'heka'],
+                default=['ceph', 'cron', 'elasticsearch', 'etcd', 'haproxy',
+                         'heka', 'keepalived', 'kibana', 'kolla-toolbox',
+                         'mariadb', 'memcached', 'mongodb', 'openvswitch',
+                         'rabbitmq', 'tgtd'],
                 help='Infra images'),
     cfg.ListOpt('main',
                 default=['cinder', 'ceilometer', 'glance', 'heat',
@@ -44,9 +45,10 @@ _PROFILE_OPTS = [
                          'swift'],
                 help='Main images'),
     cfg.ListOpt('aux',
-                default=['aodh', 'designate', 'gnocchi', 'ironic',
-                         'magnum', 'mistral', 'trove,' 'zaqar',
-                         'congress'],
+                default=['aodh', 'congress', 'designate', 'gnocchi',
+                         'influxdb', 'ironic', 'kuryr', 'magnum', 'manila',
+                         'mistral', 'murano', 'rally', 'sahara', 'senlin',
+                         'telegraf', 'trove', 'zaqar'],
                 help='Aux Images'),
     cfg.ListOpt('default',
                 default=['cron', 'kolla-toolbox', 'glance', 'haproxy',
@@ -211,7 +213,7 @@ SOURCES = {
         'type': 'url',
         'location': ('http://tarballs.openstack.org/ironic/'
                      'ironic-master.tar.gz')},
-    'keystone': {
+    'keystone-base': {
         'type': 'url',
         'location': ('http://tarballs.openstack.org/keystone/'
                      'keystone-master.tar.gz')},

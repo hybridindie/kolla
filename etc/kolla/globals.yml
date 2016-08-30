@@ -59,6 +59,13 @@ docker_namespace: "johnd"
 # Additionally, all vxlan/tunnel and storage network traffic will go over this
 # interface by default. This interface must contain an IPv4 address.
 network_interface: "wlp2s0"
+# It is possible for hosts to have non-matching names of interfaces - these can
+# be set in an inventory file per host or per group or stored separately, see
+#     http://docs.ansible.com/ansible/intro_inventory.html
+# Yet another way to workaround the naming problem is to create a bond for the
+# interface on all hosts and give the bond name here. Similar strategy can be
+# followed for other types of interfaces.
+#network_interface: "eth0"
 
 # These can be adjusted for even more customization. The default is the same as
 # the 'network_interface'. These interfaces must contain an IPv4 address.
@@ -72,7 +79,9 @@ tunnel_interface: "{{ network_interface }}"
 # though an IP address can exist on this interface, it will be unusable in most
 # configurations. It is recommended this interface not be configured with any IP
 # addresses for that reason.
+
 neutron_external_interface: "enp3s0"
+#neutron_external_interface: "eth1"
 
 # Valid options are [ openvswitch, linuxbridge ]
 #neutron_plugin_agent: "openvswitch"
@@ -105,27 +114,36 @@ neutron_external_interface: "enp3s0"
 # Valid options are [ novnc, spice ]
 #nova_console: "novnc"
 
+# Valid options are [ uuid, fernet ]
+#keystone_token_provider: 'uuid'
+# Interval to rotate fernet keys by (in seconds). Must be an interval of
+# 60(1 min), 120(2 min), 180(3 min), 240(4 min), 300(5 min), 360(6 min),
+# 600(10 min), 720(12 min), 900(15 min), 1200(20 min), 1800(30 min),
+# 3600(1 hour), 7200(2 hour), 10800(3 hour), 14400(4 hour), 21600(6 hour),
+# 28800(8 hour), 43200(12 hour), 86400(1 day), 604800(1 week).
+#fernet_token_expiry: 86400
+
 # OpenStack services can be enabled or disabled with these options
-enable_ceilometer: "no"
+enable_ceilometer: "yes"
 enable_central_logging: "no"
 enable_ceph: "no"
 enable_ceph_rgw: "no"
-enable_cinder: "no"
-enable_cinder_backend_lvm: "no"
+enable_cinder: "yes"
+enable_cinder_backend_lvm: "yes"
 enable_heat: "yes"
-enable_horizon: "yes"
+enable_horizon: "no"
 enable_ironic: "no"
-enable_magnum: "no"
+enable_magnum: "yea"
 enable_manila: "no"
-enable_mistral: "no"
-enable_mongodb: "no"
-enable_murano: "no"
+enable_mistral: "yes"
+enable_mongodb: "ues"
+enable_murano: "yes"
 enable_multipathd: "no"
-enable_neutron_lbaas: "no"
-enable_neutron_qos: "no"
+enable_neutron_lbaas: "yes"
+enable_neutron_qos: "yes"
 enable_swift: "no"
 enable_tempest: "no"
-enable_watcher: "no"
+enable_watcher: "yes"
 
 
 ###################
