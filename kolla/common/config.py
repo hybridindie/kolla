@@ -173,6 +173,10 @@ SOURCES = {
         'type': 'url',
         'location': ('http://tarballs.openstack.org/aodh/'
                      'aodh-master.tar.gz')},
+    'bifrost-base': {
+        'type': 'url',
+        'location': ('http://tarballs.openstack.org/bifrost/'
+                     'bifrost-master.tar.gz')},
     'ceilometer-base': {
         'type': 'url',
         'location': ('http://tarballs.openstack.org/ceilometer/'
@@ -209,6 +213,10 @@ SOURCES = {
         'type': 'url',
         'location': ('http://tarballs.openstack.org/horizon/'
                      'horizon-master.tar.gz')},
+    'horizon-plugin-neutron-lbaas-dashboard': {
+        'type': 'url',
+        'location': ('http://tarballs.openstack.org/neutron-lbaas-dashboard/'
+                     'neutron-lbaas-dashboard-master.tar.gz')},
     'ironic-base': {
         'type': 'url',
         'location': ('http://tarballs.openstack.org/ironic/'

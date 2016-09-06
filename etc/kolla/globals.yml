@@ -59,6 +59,7 @@ docker_namespace: "johnd"
 # Additionally, all vxlan/tunnel and storage network traffic will go over this
 # interface by default. This interface must contain an IPv4 address.
 network_interface: "wlp2s0"
+
 # It is possible for hosts to have non-matching names of interfaces - these can
 # be set in an inventory file per host or per group or stored separately, see
 #     http://docs.ansible.com/ansible/intro_inventory.html
@@ -81,7 +82,6 @@ tunnel_interface: "{{ network_interface }}"
 # addresses for that reason.
 
 neutron_external_interface: "enp3s0"
-#neutron_external_interface: "eth1"
 
 # Valid options are [ openvswitch, linuxbridge ]
 #neutron_plugin_agent: "openvswitch"
@@ -130,6 +130,7 @@ enable_ceph: "no"
 enable_ceph_rgw: "no"
 enable_cinder: "yes"
 enable_cinder_backend_lvm: "yes"
+enable_congress: "no"
 enable_heat: "yes"
 enable_horizon: "no"
 enable_ironic: "no"
@@ -141,6 +142,7 @@ enable_murano: "yes"
 enable_multipathd: "no"
 enable_neutron_lbaas: "yes"
 enable_neutron_qos: "yes"
+enable_neutron_agent_ha: "no"
 enable_swift: "no"
 enable_tempest: "no"
 enable_watcher: "yes"

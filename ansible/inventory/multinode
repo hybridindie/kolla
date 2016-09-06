@@ -104,6 +104,15 @@ control
 [ceilometer:children]
 control
 
+[aodh:children]
+control
+
+[congress:children]
+control
+
+[gnocchi:children]
+control
+
 # Tempest
 [tempest:children]
 control
@@ -269,6 +278,39 @@ ceilometer
 
 [ceilometer-compute:children]
 compute
+
+# Aodh
+[aodh-api:children]
+aodh
+
+[aodh-evaluator:children]
+aodh
+
+[aodh-listener:children]
+aodh
+
+[aodh-notifier:children]
+aodh
+
+# Congress
+[congress-api:children]
+congress
+
+[congress-datasource:children]
+congress
+
+[congress-policy-engine:children]
+congress
+
+# Gnocchi
+[gnocchi-api:children]
+gnocchi
+
+[gnocchi-statsd:children]
+gnocchi
+
+[gnocchi-metricd:children]
+gnocchi
 
 # Multipathd
 [multipathd:children]

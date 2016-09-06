@@ -84,9 +84,19 @@ control
 [manila:children]
 control
 
+[gnocchi:children]
+control
+
 [ceilometer:children]
 control
 
+[aodh:children]
+control
+
+[congress:children]
+control
+
+# Tempest
 [tempest:children]
 control
 
@@ -236,6 +246,29 @@ mistral
 [mistral-engine:children]
 mistral
 
+# Aodh
+[aodh-api:children]
+aodh
+
+[aodh-evaluator:children]
+aodh
+
+[aodh-listener:children]
+aodh
+
+[aodh-notifier:children]
+aodh
+
+# Gnocchi
+[gnocchi-api:children]
+gnocchi
+
+[gnocchi-statsd:children]
+gnocchi
+
+[gnocchi-metricd:children]
+gnocchi
+
 # Ceilometer
 [ceilometer-api:children]
 ceilometer
@@ -251,6 +284,16 @@ ceilometer
 
 [ceilometer-compute:children]
 compute
+
+# Congress
+[congress-api:children]
+congress
+
+[congress-datasource:children]
+congress
+
+[congress-policy-engine:children]
+congress
 
 # Multipathd
 [multipathd:children]

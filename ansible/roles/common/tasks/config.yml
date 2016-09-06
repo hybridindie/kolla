@@ -6,6 +6,7 @@
     recurse: yes
   with_items:
     - "heka"
+    - "kolla-toolbox"
     - "cron"
     - "cron/logrotate"
 
@@ -15,6 +16,7 @@
     dest: "{{ node_config_directory }}/{{ item }}/config.json"
   with_items:
     - "heka"
+    - "kolla-toolbox"
     - "cron"
 
 - name: Copying over heka config files
@@ -23,8 +25,10 @@
     dest: "{{ node_config_directory }}/heka/heka-{{ item.name }}.toml"
   when: item.enabled | bool
   with_items:
+    - { name: "aodh", enabled: "{{ enable_aodh }}" }
     - { name: "elasticsearch", enabled: "{{ enable_central_logging }}" }
     - { name: "global", enabled: "yes" }
+    - { name: "gnocchi", enabled: "{{ enable_gnocchi }}" }
     - { name: "haproxy", enabled: "{{ enable_haproxy }}" }
     - { name: "horizon", enabled: "{{ enable_horizon }}" }
     - { name: "keepalived", enabled: "{{ enable_haproxy }}" }
@@ -64,9 +68,11 @@
     dest: "{{ node_config_directory }}/cron/logrotate/{{ item }}.conf"
   with_items:
     - "ansible"
+    - "aodh"
     - "cinder"
     - "glance"
     - "global"
+    - "gnocchi"
     - "haproxy"
     - "heat"
     - "keepalived"
